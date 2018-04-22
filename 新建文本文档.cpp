@@ -7,27 +7,27 @@
 using namespace std;
 
 
-int const m =500;//½áµãÊı
-int const n=49;//ÑÕÉ«Êı
+int const m =500;//ç»“ç‚¹æ•°
+int const n=49;//é¢œè‰²æ•°
 int node = 0, color = 0;
-int connect[m][m];//Á¬½Ó±í
-int insol[m];//³õÊ¼½â
-int taboo[m][n]; //½û¼É±í
-int tabumove[10000][2];//¼ÇÂ¼±í
+int connect[m][m];//è¿æ¥è¡¨
+int insol[m];//åˆå§‹è§£
+int taboo[m][n]; //ç¦å¿Œè¡¨
+int tabumove[10000][2];//è®°å½•è¡¨
 int untabumove[10000][2];
-int conflict[m][n];//³åÍ»Êı
-int MaxIter =10000000;//µü´úÉÏÏŞ
+int conflict[m][n];//å†²çªæ•°
+int MaxIter =10000000;//è¿­ä»£ä¸Šé™
 int f, best_f;
 int iter = 0;
 
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 void Initialization()
 {
-	for(int i=0;i<m;i++)//Á¬½Ó±íµÄ³õÊ¼»¯
+	for(int i=0;i<m;i++)//è¿æ¥è¡¨çš„åˆå§‹åŒ–
 		for(int j=0;j<m;j++)
 			connect[i][j]=0;
 	int x, y;
-	ifstream fd;//µ¼ÈëÊı¾İÉú³ÉÁ¬½Ó±í
+	ifstream fd;//å¯¼å…¥æ•°æ®ç”Ÿæˆè¿æ¥è¡¨
 	fd.open("f:\\DSJC500.5.col", ios::in);
 	if (!fd.is_open())
 		cout << "open file failure" << endl;
@@ -41,7 +41,7 @@ void Initialization()
 
 
 
-    for (int i = 0; i <10000; i++)//¼ÇÂ¼±íµÄ³õÊ¼»¯
+    for (int i = 0; i <10000; i++)//è®°å½•è¡¨çš„åˆå§‹åŒ–
     {
 	    for (int j = 0; j < 2; j++)
 	    {
@@ -50,13 +50,13 @@ void Initialization()
 	    }
     }
 	
-	for (int i = 0; i < m; i++)//Éú³É³õÊ¼½â
+	for (int i = 0; i < m; i++)//ç”Ÿæˆåˆå§‹è§£
     {
 	     insol[i] = rand() % n;
     }
 
 
-    for (int i = 0; i < m; i++)//ÁÚ½ÓÑÕÉ«±íµÄ³õÊ¼»¯
+    for (int i = 0; i < m; i++)//é‚»æ¥é¢œè‰²è¡¨çš„åˆå§‹åŒ–
     {
 	     for (int j = 0; j < n; j++)
 	     {
@@ -77,7 +77,7 @@ for (int i = 0; i < m; i++)
 }
 
 
-for (int i = 0; i < m; i++)//½û¼É±íµÄ³õÊ¼»¯
+for (int i = 0; i < m; i++)//ç¦å¿Œè¡¨çš„åˆå§‹åŒ–
 {
 	for (int j = 0; j < n; j++)
 	{
@@ -85,7 +85,7 @@ for (int i = 0; i < m; i++)//½û¼É±íµÄ³õÊ¼»¯
 	}
 }
 
-for (int i = 0; i < m; i++)//f³õÊ¼»¯
+for (int i = 0; i < m; i++)//fåˆå§‹åŒ–
 {
 	for (int j = 0; j < m; j++)
 	{
@@ -98,18 +98,18 @@ best_f = f;
 
 }
 
-//ÕÒ×î¼Ñ½û¼É»òÕß·Ç½û¼ÉÒÆ¶¯£¬²¢½øĞĞ¸üĞÂ
+//æ‰¾æœ€ä½³ç¦å¿Œæˆ–è€…éç¦å¿Œç§»åŠ¨ï¼Œå¹¶è¿›è¡Œæ›´æ–°
 void FindMove()
 {
-	int delt = 10000;//³õÊ¼Îª×î´óÕû
-	int tmp;//ÁÙÊ±±äÁ¿
+	int delt = 10000;//åˆå§‹ä¸ºæœ€å¤§æ•´
+	int tmp;//ä¸´æ—¶å˜é‡
 	int tabu_delt = 10000;
 	int count = 0, tabu_count = 0;
 	int A = best_f - f;
-	int c_color;//µ±Ç°½áµãÑÕÉ«
-	int *h_color;//ÁÚ½ÓÑÕÉ«±íĞĞÊ×Ö¸Õë
-	int *h_tabu;//½û¼É±íĞĞÊ×Ö¸Õë
-	int c_color_table;//µ±Ç°½áµãÑÕÉ«±íµÄÖµ
+	int c_color;//å½“å‰ç»“ç‚¹é¢œè‰²
+	int *h_color;//é‚»æ¥é¢œè‰²è¡¨è¡Œé¦–æŒ‡é’ˆ
+	int *h_tabu;//ç¦å¿Œè¡¨è¡Œé¦–æŒ‡é’ˆ
+	int c_color_table;//å½“å‰ç»“ç‚¹é¢œè‰²è¡¨çš„å€¼
 	for (int i = 0; i < m; i++)
 	{
 		c_color = insol[i];
@@ -131,7 +131,7 @@ void FindMove()
 							untabumove[count - 1][1] = j;
 						}
 					}
-					else {//½û¼ÉÒÆ¶¯
+					else {//ç¦å¿Œç§»åŠ¨
 						if (tmp <= tabu_delt) {//6.0
 							if (tmp < tabu_delt) {
 								tabu_delt = tmp;
@@ -151,26 +151,26 @@ void FindMove()
 	if (tabu_delt < A && tabu_delt < delt)
 	{
 		delt = tabu_delt;
-		tmp = rand() % tabu_count;//ÏàµÈdeltËæ»úÑ¡Ôñ   
+		tmp = rand() % tabu_count;//ç›¸ç­‰deltéšæœºé€‰æ‹©   
 		node = tabumove[tmp][0];
 		color = tabumove[tmp][1];
 	}
 	else
 	{
-		tmp = rand() % count;//ÏàµÈdeltËæ»úÑ¡Ôñ
+		tmp = rand() % count;//ç›¸ç­‰deltéšæœºé€‰æ‹©
 		node = untabumove[tmp][0];
 		color = untabumove[tmp][1];
 	}
 	//cout << delt << " ";
-	f = delt + f;//¸üĞÂ³åÍ»Öµ
+	f = delt + f;//æ›´æ–°å†²çªå€¼
 	if (f< best_f)
 	{
 		best_f = f;
 	}
 	//cout << best_f << " ";
 	int old_color = insol[node];
-	insol[node] = color;//¸üĞÂ½â
-	taboo[node][old_color] = iter + f + rand() % 10 + 1;//¸üĞÂ½û¼É±í
+	insol[node] = color;//æ›´æ–°è§£
+	taboo[node][old_color] = iter + f + rand() % 10 + 1;//æ›´æ–°ç¦å¿Œè¡¨
 	for (int i = 0; i < m; i++)
 	{
 		if (connect[node][i] == 1)
@@ -184,10 +184,10 @@ void FindMove()
 
 int main()
 {
-	srand((unsigned)time(0));//¼ÇÂ¼Ê±¼ä
+	srand((unsigned)time(0));//è®°å½•æ—¶é—´
 	clock_t start, finish;
 	start = clock();
-	Initialization();//³õÊ¼»¯
+	Initialization();//åˆå§‹åŒ–
 	while ((iter < MaxIter) && (best_f>0))
 	{
 		FindMove();
